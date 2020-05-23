@@ -24,7 +24,7 @@ namespace NewDiscordBot
       serviceProvider = new ServiceCollection()
         .AddSingleton(client)
         .AddSingleton(commands)
-        .AddSingleton(new CompanionState(Companions.Navi, string.Empty, string.Empty, 0, DateTime.MinValue))
+        .AddSingleton(new CompanionState(Companions.Navi, string.Empty, new int[5], string.Empty, 0, DateTime.MinValue))
         .BuildServiceProvider();
       Console.WriteLine("Input the token and press enter: ");
       
@@ -53,6 +53,7 @@ namespace NewDiscordBot
     {
       (serviceProvider.GetService(typeof(CompanionState)) as CompanionState).Companion = stateResponse.CompanionState.Companion;
       (serviceProvider.GetService(typeof(CompanionState)) as CompanionState).Greeting = stateResponse.CompanionState.Greeting;
+      (serviceProvider.GetService(typeof(CompanionState)) as CompanionState).TalkIndex = stateResponse.CompanionState.TalkIndex;
       (serviceProvider.GetService(typeof(CompanionState)) as CompanionState).LastReply = stateResponse.CompanionState.LastReply;
       (serviceProvider.GetService(typeof(CompanionState)) as CompanionState).NumberOfChanges = stateResponse.CompanionState.NumberOfChanges;
     }
@@ -104,13 +105,15 @@ namespace NewDiscordBot
   {
     public Companions Companion { get; set; }
     public string Greeting { get; set; }
+    public int[] TalkIndex { get; set; } = new int[5];
     public string LastReply { get; set; }
     public int NumberOfChanges { get; set; }
     public DateTime LastChangeTime { get; set; }
-    public CompanionState(Companions companion, string greeting, string lastReply, int numberOfChanges, DateTime lastChangeTime)
+    public CompanionState(Companions companion, string greeting, int[] talkIndex, string lastReply, int numberOfChanges, DateTime lastChangeTime)
     {
       Companion = companion;
       Greeting = greeting;
+      TalkIndex = talkIndex;
       LastReply = lastReply;
       NumberOfChanges = numberOfChanges;
       LastChangeTime = lastChangeTime;

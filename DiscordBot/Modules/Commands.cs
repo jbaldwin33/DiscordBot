@@ -192,10 +192,14 @@ namespace NewDiscordBot.Modules
     [Command("talk")]
     public async Task<RuntimeResult> Talk()
     {
-      var quotes = CompanionQuotes[(int)CompanionConvo.Companion];
-      var num = new Random().Next(0, quotes.Value.Length);
-      CompanionConvo.LastReply = quotes.Value[num];
+      var index = (int)CompanionConvo.Companion;
+      var quotes = CompanionQuotes[index];
+      //var num = new Random().Next(0, quotes.Value.Length);
+      CompanionConvo.LastReply = quotes.Value[CompanionConvo.TalkIndex[index]];
       await ReplyAsync(CompanionConvo.LastReply);
+      CompanionConvo.TalkIndex[index] = CompanionConvo.TalkIndex[index] == 4
+        ? 0
+        : CompanionConvo.TalkIndex[index] + 1;
       return StateResponse.FromSuccess(CompanionConvo);
     }
 
