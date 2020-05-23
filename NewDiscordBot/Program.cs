@@ -26,12 +26,13 @@ namespace NewDiscordBot
         .AddSingleton(commands)
         .AddSingleton(new CompanionState(Companions.Navi, string.Empty, string.Empty, 0, DateTime.MinValue))
         .BuildServiceProvider();
-
-      var token = "NzEzMDIzNzc1MjYzODE3NzI5.XscpgQ.BQRK7UnuqbBqe6GH4e8YsMMVI5o";
+      Console.WriteLine("Input the token and press enter: ");
+      
+      var token = Console.ReadLine();
 
       client.Log += Client_Log;
       await RegisterCommandsAsync();
-      await client.LoginAsync(Discord.TokenType.Bot, token);
+      await client.LoginAsync(TokenType.Bot, token);
       await client.StartAsync();
       await Task.Delay(-1);
     }
